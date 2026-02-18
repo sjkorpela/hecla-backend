@@ -1,29 +1,21 @@
-# README #
+# HE/CLA Backend #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Backend layers of HE/CLA project:
+* Maven Java Spring Boot backend as API request handler
+* MongoDB as backend
 
-### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### How to run locally ###
 
-### How do I get set up? ###
+Needs:
+* JDK 21+ to build
+* Docker to build and run
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Instructions:
+1. Run command `./mvnw clean package` to build .jar file.
+2. Run command `docker compose build` to build Docker image.
+3. Run command `docker compose up` to start the Docker container.
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Or just run command 
+`./mvnw clean package -DskipTests && docker compose down && docker compose up --build`
+to build and run project.
