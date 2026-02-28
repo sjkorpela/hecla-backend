@@ -2,6 +2,7 @@ package com.hecla.heclaBackend.controller;
 
 import com.hecla.heclaBackend.model.Person;
 import com.hecla.heclaBackend.service.PersonService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,10 @@ public class PersonController {
     try {
       personService.createPerson(person);
       return ResponseEntity.ok().build();
+    } catch (BadRequestException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e);
+      return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
 
@@ -28,7 +31,7 @@ public class PersonController {
     try {
       return ResponseEntity.ok().body(personService.findAll());
     } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e);
+      return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
 
@@ -37,7 +40,7 @@ public class PersonController {
     try {
       return ResponseEntity.ok().body(personService.findById(id));
     } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e);
+      return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
 
@@ -47,7 +50,7 @@ public class PersonController {
       personService.updateById(id, person);
       return ResponseEntity.ok().build();
     } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e);
+      return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
 
@@ -57,7 +60,7 @@ public class PersonController {
       personService.deleteById(id);
       return ResponseEntity.ok().build();
     } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e);
+      return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
 }
