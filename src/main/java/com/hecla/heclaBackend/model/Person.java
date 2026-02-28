@@ -20,15 +20,15 @@ public class Person {
   @Id
   private int id;
 
-  private int fatherId;
-  private int motherId;
+  private Integer fatherId;
+  private Integer motherId;
 
   private Gender gender;
 
-  private int birthYear;
+  private Integer birthYear;
   private String birthPlace;
-  private boolean alive;
-  private int deathYear;
+  private Boolean alive;
+  private Integer deathYear;
   private String deathPlace;
 
 }
