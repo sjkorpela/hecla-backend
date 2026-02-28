@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,4 +33,7 @@ public class Person {
   private Integer deathYear;
   private String deathPlace;
 
+  private ArrayList<FirstName> firstNames;
+  private ArrayList<LastName> lastNames;
+  private ArrayList<AdditionalInfo> additionalInfos;
 }
