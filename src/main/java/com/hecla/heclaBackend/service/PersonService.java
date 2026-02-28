@@ -2,6 +2,7 @@ package com.hecla.heclaBackend.service;
 
 import com.hecla.heclaBackend.model.Person;
 import com.hecla.heclaBackend.repository.PersonRepo;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,11 @@ public class PersonService {
   @Autowired
   private PersonRepo repo;
 
-  public void createPerson(Person user) {
-    repo.save(user);
+  public void createPerson(Person person) throws BadRequestException {
+    if (repo.existsById(person.getId())) {
+      throw new BadRequestException("Person with id " + person.getId() + " already exists");
+    }
+    repo.save(person);
   }
 
   public List<Person> findAll() {
