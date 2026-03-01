@@ -49,6 +49,8 @@ public class PersonController {
     try {
       personService.updateById(id, person);
       return ResponseEntity.ok().build();
+    }catch (BadRequestException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.internalServerError().body(e.getMessage());
     }

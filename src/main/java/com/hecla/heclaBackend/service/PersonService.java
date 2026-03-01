@@ -30,7 +30,10 @@ public class PersonService {
     return repo.findById(id);
   }
 
-  public void updateById(int id, Person person) {
+  public void updateById(int id, Person person) throws BadRequestException {
+    if (person.getId() != id) {
+      throw new BadRequestException("Request ids don't match");
+    }
     repo.save(person);
   }
 
