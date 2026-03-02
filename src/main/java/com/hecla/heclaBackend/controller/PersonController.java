@@ -2,7 +2,6 @@ package com.hecla.heclaBackend.controller;
 
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.service.PersonService;
-import com.mongodb.client.result.UpdateResult;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,13 +26,13 @@ public class PersonController {
   }
 
   @GetMapping("/persons")
-  public ResponseEntity<?> readAllPersons() {
-    return ResponseEntity.ok().body(personService.findAll());
+  public List<DataTransferPerson> readAllPersons() {
+    return personService.findAll();
   }
 
   @GetMapping("/persons/{id}")
-  public ResponseEntity<?> readPersonById(@PathVariable int id) {
-    return ResponseEntity.ok().body(personService.findById(id));
+  public DataTransferPerson readPersonById(@PathVariable int id) {
+    return personService.findById(id);
   }
 
   @PutMapping("/persons/{id}")

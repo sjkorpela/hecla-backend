@@ -58,4 +58,20 @@ public class DocumentPerson {
     setLastNames(dto.lastNames());
     setAdditionalInfos(dto.additionalInfos());
   }
+
+  public DataTransferPerson toDataTransferPerson() {
+    return new DataTransferPerson(
+            fatherId,
+            motherId,
+            gender,
+            birthYear,
+            birthPlace,
+            alive,
+            deathYear,
+            deathPlace,
+            firstNames,
+            lastNames,
+            additionalInfos
+    );
+  }
 }

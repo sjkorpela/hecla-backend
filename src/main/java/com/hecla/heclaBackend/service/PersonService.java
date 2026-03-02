@@ -28,12 +28,14 @@ public class PersonService {
     repo.save(new DocumentPerson(0, person));
   }
 
-  public List<DocumentPerson> findAll() {
-    return repo.findAll(DocumentPerson.class);
+  public List<DataTransferPerson> findAll() {
+    List<DocumentPerson> persons = repo.findAll(DocumentPerson.class);
+    return persons.stream().map(DocumentPerson::toDataTransferPerson).toList();
   }
 
-  public DocumentPerson findById(int id) {
-    return repo.findById(id, DocumentPerson.class);
+  public DataTransferPerson findById(int id) {
+    DocumentPerson person = repo.findById(id, DocumentPerson.class);
+    return person != null ? person.toDataTransferPerson() : null;
   }
 
   public void updateById(int id, DataTransferPerson person) throws BadRequestException {
