@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public record DataTransferPerson(
   Integer fatherId,
   Integer motherId,
-  Person.Gender gender,
+  DocumentPerson.Gender gender,
   Integer birthYear,
   String birthPlace,
   Boolean alive,

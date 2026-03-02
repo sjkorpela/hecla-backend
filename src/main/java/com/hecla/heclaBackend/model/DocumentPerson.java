@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Person")
-public class Person {
+public class DocumentPerson {
 
   public enum Gender {
     MALE,
@@ -29,11 +29,33 @@ public class Person {
 
   private Integer birthYear;
   private String birthPlace;
-  private Boolean alive;
+  private boolean alive;
   private Integer deathYear;
   private String deathPlace;
 
   private ArrayList<FirstName> firstNames;
   private ArrayList<LastName> lastNames;
   private ArrayList<AdditionalInfo> additionalInfos;
+
+  public DocumentPerson(int id, DataTransferPerson dto) {
+    setId(id);
+
+    setFatherId(dto.fatherId());
+    setMotherId(dto.motherId());
+    setGender(dto.gender()); // Person must have gender? Discuss in weekly...
+    setBirthYear(dto.birthYear());
+    setBirthPlace(dto.birthPlace());
+
+    if (dto.alive() == null) {
+      setAlive(dto.deathYear() == null && dto.deathPlace() == null);
+    } else {
+      setAlive(dto.alive());
+    }
+
+    setDeathYear(dto.deathYear());
+    setDeathPlace(dto.deathPlace());
+    setFirstNames(dto.firstNames()); // Person must have at least 1 name? Discuss in weekly...
+    setLastNames(dto.lastNames());
+    setAdditionalInfos(dto.additionalInfos());
+  }
 }

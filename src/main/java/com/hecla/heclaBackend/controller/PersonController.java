@@ -1,11 +1,16 @@
 package com.hecla.heclaBackend.controller;
 
-import com.hecla.heclaBackend.model.Person;
+import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.service.PersonService;
+import com.mongodb.client.result.UpdateResult;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -15,15 +20,9 @@ public class PersonController {
   private PersonService personService;
 
   @PostMapping("/persons")
-  public ResponseEntity<?> createPerson(@RequestBody Person person) {
-    try {
-      personService.createPerson(person);
-      return ResponseEntity.ok().build();
-    } catch (BadRequestException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
+  public void createPerson(@RequestBody DataTransferPerson person) throws BadRequestException {
+    personService.createPerson(person);
+    throw new ResponseStatusException(HttpStatus.CREATED);
   }
 
   @GetMapping("/persons")
@@ -37,16 +36,19 @@ public class PersonController {
   }
 
   @PutMapping("/persons/{id}")
-  public ResponseEntity<?> updatePersonById(@PathVariable int id, @RequestBody Person person) {
-    try {
-      personService.updateById(id, person);
-      return ResponseEntity.ok().build();
-    }catch (BadRequestException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
+  public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) throws BadRequestException {
+    personService.updateById(id, person);
+    throw new ResponseStatusException(HttpStatus.OK);
   }
+
+//  @PatchMapping("/persons/{id}")
+//  public UpdateResult patchPersonById(
+//          @PathVariable int id,
+//          @RequestBody DataTransferPerson person // Map<String, Object>
+//  ) throws BadRequestException {
+//    personService.patchById(id, person);
+//    throw new ResponseStatusException(HttpStatus.OK);
+//  }
 
   @DeleteMapping("/persons/{id}")
   public void deletePersonById(@PathVariable int id) {
