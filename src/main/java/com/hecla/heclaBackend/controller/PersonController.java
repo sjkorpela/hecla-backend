@@ -14,7 +14,7 @@ public class PersonController {
   @Autowired
   private PersonService personService;
 
-  @PostMapping("/person")
+  @PostMapping("/persons")
   public ResponseEntity<?> createPerson(@RequestBody Person person) {
     try {
       personService.createPerson(person);
@@ -26,25 +26,17 @@ public class PersonController {
     }
   }
 
-  @GetMapping("/person")
+  @GetMapping("/persons")
   public ResponseEntity<?> readAllPersons() {
-    try {
-      return ResponseEntity.ok().body(personService.findAll());
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
+    return ResponseEntity.ok().body(personService.findAll());
   }
 
-  @GetMapping("/person/{id}")
+  @GetMapping("/persons/{id}")
   public ResponseEntity<?> readPersonById(@PathVariable int id) {
-    try {
-      return ResponseEntity.ok().body(personService.findById(id));
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
+    return ResponseEntity.ok().body(personService.findById(id));
   }
 
-  @PutMapping("/person/{id}")
+  @PutMapping("/persons/{id}")
   public ResponseEntity<?> updatePersonById(@PathVariable int id, @RequestBody Person person) {
     try {
       personService.updateById(id, person);
@@ -56,13 +48,8 @@ public class PersonController {
     }
   }
 
-  @DeleteMapping("/person/{id}")
-  public ResponseEntity<?> deletePersonById(@PathVariable int id) {
-    try {
-      personService.deleteById(id);
-      return ResponseEntity.ok().build();
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
+  @DeleteMapping("/persons/{id}")
+  public void deletePersonById(@PathVariable int id) {
+    personService.deleteById(id);
   }
 }
