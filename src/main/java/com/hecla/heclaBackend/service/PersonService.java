@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,12 +38,15 @@ public class PersonService {
 
   public DataTransferPerson findById(int id) {
     DocumentPerson person = repo.findById(id);
-    return person != null ? person.toDataTransferPerson() : null;
+    if (person == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return person.toDataTransferPerson();
   }
 
   public void updateById(int id, DataTransferPerson person) throws BadRequestException {
     if (!validationService.personExistsById(id)) {
-      throw new BadRequestException("Given id not found");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     validationService.validateDataTransferPerson(person);
     repo.updatePerson(new DocumentPerson(id, person));
