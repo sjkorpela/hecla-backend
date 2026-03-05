@@ -1,6 +1,7 @@
 package com.hecla.heclaBackend.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public record DataTransferPerson(
   Integer id,
@@ -12,9 +13,9 @@ public record DataTransferPerson(
   Boolean deceased,
   Integer deathYear,
   String deathPlace,
-  ArrayList<FirstName>firstNames,
-  ArrayList<LastName> lastNames,
-  ArrayList<AdditionalInfo> additionalInfos
+  List<FirstName>firstNames,
+  List<LastName> lastNames,
+  List<AdditionalInfo> additionalInfos
 ) {
 
 }
