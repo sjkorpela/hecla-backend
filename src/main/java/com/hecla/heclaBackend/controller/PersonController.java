@@ -20,9 +20,9 @@ public class PersonController {
   private PersonService personService;
 
   @PostMapping("/persons")
+  @ResponseStatus(HttpStatus.CREATED)
   public void createPerson(@RequestBody DataTransferPerson person) throws BadRequestException {
     personService.createPerson(person);
-    throw new ResponseStatusException(HttpStatus.CREATED);
   }
 
   @GetMapping("/persons")
@@ -38,19 +38,10 @@ public class PersonController {
   @PutMapping("/persons/{id}")
   public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) throws BadRequestException {
     personService.updateById(id, person);
-    throw new ResponseStatusException(HttpStatus.OK);
   }
 
-//  @PatchMapping("/persons/{id}")
-//  public UpdateResult patchPersonById(
-//          @PathVariable int id,
-//          @RequestBody DataTransferPerson person // Map<String, Object>
-//  ) throws BadRequestException {
-//    personService.patchById(id, person);
-//    throw new ResponseStatusException(HttpStatus.OK);
-//  }
-
   @DeleteMapping("/persons/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePersonById(@PathVariable int id) {
     personService.deleteById(id);
   }
