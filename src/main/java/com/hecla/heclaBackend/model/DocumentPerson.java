@@ -37,9 +37,23 @@ public class DocumentPerson {
   private ArrayList<LastName> lastNames;
   private ArrayList<AdditionalInfo> additionalInfos;
 
-  public DocumentPerson(int id, DataTransferPerson dto) {
-    setId(id);
+  public DocumentPerson(DataTransferPerson dto) {
+    setId(dto.id());
+    setFatherId(dto.fatherId());
+    setMotherId(dto.motherId());
+    setGender(dto.gender());
+    setBirthYear(dto.birthYear());
+    setBirthPlace(dto.birthPlace());
+    setDeceased(dto.deceased());
+    setDeathYear(dto.deathYear());
+    setDeathPlace(dto.deathPlace());
+    setFirstNames(dto.firstNames());
+    setLastNames(dto.lastNames());
+    setAdditionalInfos(dto.additionalInfos());
+  }
 
+  public DocumentPerson(DataTransferPerson dto, int id) {
+    setId(id);
     setFatherId(dto.fatherId());
     setMotherId(dto.motherId());
     setGender(dto.gender());
@@ -55,6 +69,7 @@ public class DocumentPerson {
 
   public DataTransferPerson toDataTransferPerson() {
     return new DataTransferPerson(
+            id,
             fatherId,
             motherId,
             gender,

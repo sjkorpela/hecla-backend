@@ -21,8 +21,8 @@ public class PersonController {
 
   @PostMapping("/persons")
   @ResponseStatus(HttpStatus.CREATED)
-  public void createPerson(@RequestBody DataTransferPerson person) throws BadRequestException {
-    personService.createPerson(person);
+  public DataTransferPerson createPerson(@RequestBody DataTransferPerson dtoPerson) throws BadRequestException {
+    return personService.createPerson(dtoPerson);
   }
 
   @GetMapping("/persons")

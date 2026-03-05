@@ -3,6 +3,7 @@ package com.hecla.heclaBackend.service;
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
 import com.hecla.heclaBackend.repository.PersonRepo;
+import lombok.NonNull;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,9 +27,10 @@ public class PersonService {
   @Autowired
   private ValidationService validationService;
 
-  public void createPerson(DataTransferPerson person) throws BadRequestException {
-    validationService.validateDataTransferPerson(person);
-    repo.createPerson(new DocumentPerson(0, person));
+  public DataTransferPerson createPerson(DataTransferPerson dtoPerson) throws BadRequestException {
+    validationService.validateDataTransferPerson(dtoPerson);
+    DocumentPerson docPerson = new DocumentPerson(dtoPerson, repo.getNextId());
+    return repo.createPerson(docPerson).toDataTransferPerson();
   }
 
   public List<DataTransferPerson> findAll() {
@@ -44,12 +46,14 @@ public class PersonService {
     return person.toDataTransferPerson();
   }
 
-  public void updateById(int id, DataTransferPerson person) throws BadRequestException {
+  public void updateById(int id, DataTransferPerson dtoPerson) throws BadRequestException {
     if (!repo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    validationService.validateDataTransferPerson(person);
-    repo.updatePerson(new DocumentPerson(id, person));
+    validationService.validateDataTransferPerson(dtoPerson);
+    DocumentPerson docPerson = new DocumentPerson(dtoPerson);
+    docPerson.setId(id);
+    repo.updatePerson(docPerson);
   }
 
   public void deleteById(int id) {

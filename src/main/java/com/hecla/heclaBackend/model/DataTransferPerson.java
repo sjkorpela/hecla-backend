@@ -3,6 +3,7 @@ package com.hecla.heclaBackend.model;
 import java.util.ArrayList;
 
 public record DataTransferPerson(
+  Integer id,
   Integer fatherId,
   Integer motherId,
   DocumentPerson.Gender gender,
