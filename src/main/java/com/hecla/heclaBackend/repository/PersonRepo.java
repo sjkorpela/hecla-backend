@@ -1,5 +1,6 @@
 package com.hecla.heclaBackend.repository;
 
+import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,8 +21,9 @@ public class PersonRepo {
   @Autowired
   MongoTemplate repo;
 
-  public DocumentPerson createPerson(DocumentPerson person) {
-    return repo.save(person);
+  public DocumentPerson createPerson(DataTransferPerson dtoPerson) {
+    DocumentPerson docPerson = new DocumentPerson(dtoPerson, getNextId());
+    return repo.save(docPerson);
   }
 
   public List<DocumentPerson> findAll() {

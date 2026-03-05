@@ -1,5 +1,6 @@
 package com.hecla.heclaBackend.model;
 
+import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,8 @@ public class DocumentPerson {
   }
 
   @Id
-  private int id;
+  @NonNull
+  private Integer id;
 
   private Integer fatherId;
   private Integer motherId;

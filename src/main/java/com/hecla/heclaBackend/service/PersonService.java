@@ -29,8 +29,7 @@ public class PersonService {
 
   public DataTransferPerson createPerson(DataTransferPerson dtoPerson) throws BadRequestException {
     validationService.validateDataTransferPerson(dtoPerson);
-    DocumentPerson docPerson = new DocumentPerson(dtoPerson, repo.getNextId());
-    return repo.createPerson(docPerson).toDataTransferPerson();
+    return repo.createPerson(dtoPerson).toDataTransferPerson();
   }
 
   public List<DataTransferPerson> findAll() {
