@@ -29,7 +29,7 @@ public class DocumentPerson {
 
   private Integer birthYear;
   private String birthPlace;
-  private boolean alive;
+  private Boolean deceased;
   private Integer deathYear;
   private String deathPlace;
 
@@ -42,19 +42,13 @@ public class DocumentPerson {
 
     setFatherId(dto.fatherId());
     setMotherId(dto.motherId());
-    setGender(dto.gender()); // Person must have gender? Discuss in weekly...
+    setGender(dto.gender());
     setBirthYear(dto.birthYear());
     setBirthPlace(dto.birthPlace());
-
-    if (dto.alive() == null) {
-      setAlive(dto.deathYear() == null && dto.deathPlace() == null);
-    } else {
-      setAlive(dto.alive());
-    }
-
+    setDeceased(dto.deceased());
     setDeathYear(dto.deathYear());
     setDeathPlace(dto.deathPlace());
-    setFirstNames(dto.firstNames()); // Person must have at least 1 name? Discuss in weekly...
+    setFirstNames(dto.firstNames());
     setLastNames(dto.lastNames());
     setAdditionalInfos(dto.additionalInfos());
   }
@@ -66,7 +60,7 @@ public class DocumentPerson {
             gender,
             birthYear,
             birthPlace,
-            alive,
+            deceased,
             deathYear,
             deathPlace,
             firstNames,

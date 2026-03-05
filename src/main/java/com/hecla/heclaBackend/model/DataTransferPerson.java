@@ -8,7 +8,7 @@ public record DataTransferPerson(
   DocumentPerson.Gender gender,
   Integer birthYear,
   String birthPlace,
-  Boolean alive,
+  Boolean deceased,
   Integer deathYear,
   String deathPlace,
   ArrayList<FirstName>firstNames,
