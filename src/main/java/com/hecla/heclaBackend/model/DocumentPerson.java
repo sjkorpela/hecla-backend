@@ -55,7 +55,7 @@ public class DocumentPerson {
     setAdditionalInfos(dto.additionalInfos());
   }
 
-  public DocumentPerson(DataTransferPerson dto, int id) {
+  public DocumentPerson(int id, DataTransferPerson dto) {
     setId(id);
     setFatherId(dto.fatherId());
     setMotherId(dto.motherId());

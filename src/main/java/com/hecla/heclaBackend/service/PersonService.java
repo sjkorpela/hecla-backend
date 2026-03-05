@@ -3,20 +3,13 @@ package com.hecla.heclaBackend.service;
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
 import com.hecla.heclaBackend.repository.PersonRepo;
-import lombok.NonNull;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PersonService {
@@ -50,9 +43,7 @@ public class PersonService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     validationService.validateDataTransferPerson(dtoPerson);
-    DocumentPerson docPerson = new DocumentPerson(dtoPerson);
-    docPerson.setId(id);
-    repo.updatePerson(docPerson);
+    repo.updatePersonById(id, dtoPerson);
   }
 
   public void deleteById(int id) {

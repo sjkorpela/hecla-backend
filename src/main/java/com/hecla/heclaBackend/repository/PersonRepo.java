@@ -7,13 +7,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-import javax.swing.text.Document;
 import java.util.List;
-import java.util.random.RandomGenerator;
 
 @Repository
 public class PersonRepo {
@@ -22,7 +18,7 @@ public class PersonRepo {
   MongoTemplate repo;
 
   public DocumentPerson createPerson(DataTransferPerson dtoPerson) {
-    DocumentPerson docPerson = new DocumentPerson(dtoPerson, getNextId());
+    DocumentPerson docPerson = new DocumentPerson(getNextId(), dtoPerson);
     return repo.save(docPerson);
   }
 
@@ -34,8 +30,9 @@ public class PersonRepo {
     return repo.findById(id, DocumentPerson.class);
   }
 
-  public void updatePerson(DocumentPerson person) {
-    repo.save(person);
+  public void updatePersonById(int id, DataTransferPerson dtoPerson) {
+    DocumentPerson docPerson = new DocumentPerson(id, dtoPerson);
+    repo.save(docPerson);
   }
 
   public void deleteById(int id) {
@@ -53,6 +50,10 @@ public class PersonRepo {
 
     DocumentPerson latestPerson = repo.findOne(query, DocumentPerson.class);
     return latestPerson == null ? 0 : latestPerson.getId() + 1;
+  }
+
+  public void dropCollection() {
+    repo.dropCollection(DocumentPerson.class);
   }
 
 }
