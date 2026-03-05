@@ -45,7 +45,7 @@ public class PersonService {
   }
 
   public void updateById(int id, DataTransferPerson person) throws BadRequestException {
-    if (!validationService.personExistsById(id)) {
+    if (!repo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     validationService.validateDataTransferPerson(person);

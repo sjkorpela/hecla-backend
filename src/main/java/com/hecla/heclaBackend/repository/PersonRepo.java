@@ -37,4 +37,8 @@ public class PersonRepo {
     repo.remove(new Query(Criteria.where("_id").is(id)), DocumentPerson.class);
   }
 
+  public boolean existsById(int id) {
+    return repo.exists(new Query(Criteria.where("_id").is(id)), DocumentPerson.class);
+  }
+
 }
