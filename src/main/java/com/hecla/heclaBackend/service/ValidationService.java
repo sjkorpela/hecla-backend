@@ -21,14 +21,14 @@ public class ValidationService {
   @Autowired
   PersonRepo repo;
 
-  public void validateDataTransferPerson(DataTransferPerson person) throws BadRequestException {
+  public void validateDataTransferPerson(DataTransferPerson person) {
 
     if (person.fatherId() != null && !repo.existsById(person.fatherId())) {
-      throw new BadRequestException("Given father not found!");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given father not found!");
     }
 
     if (person.motherId() != null && !repo.existsById(person.motherId())) {
-      throw new BadRequestException("Given mother not found!");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given mother not found!");
     }
 
     // Gender validation: not necessary because enum?

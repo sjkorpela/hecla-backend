@@ -20,7 +20,10 @@ public class PersonService {
   @Autowired
   private ValidationService validationService;
 
-  public DataTransferPerson createPerson(DataTransferPerson dtoPerson) throws BadRequestException {
+  public DataTransferPerson createPerson(DataTransferPerson dtoPerson) {
+    if (dtoPerson == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No person given!");
+    }
     validationService.validateDataTransferPerson(dtoPerson);
     return repo.createPerson(dtoPerson).toDataTransferPerson();
   }
@@ -38,7 +41,7 @@ public class PersonService {
     return person.toDataTransferPerson();
   }
 
-  public void updateById(int id, DataTransferPerson dtoPerson) throws BadRequestException {
+  public void updateById(int id, DataTransferPerson dtoPerson) {
     if (!repo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
