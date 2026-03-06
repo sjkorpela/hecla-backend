@@ -40,21 +40,6 @@ public class DocumentPerson {
   private List<LastName> lastNames;
   private List<AdditionalInfo> additionalInfos;
 
-  public DocumentPerson(DataTransferPerson dto) {
-    setId(dto.id());
-    setFatherId(dto.fatherId());
-    setMotherId(dto.motherId());
-    setGender(dto.gender());
-    setBirthYear(dto.birthYear());
-    setBirthPlace(dto.birthPlace());
-    setDeceased(dto.deceased());
-    setDeathYear(dto.deathYear());
-    setDeathPlace(dto.deathPlace());
-    setFirstNames(dto.firstNames());
-    setLastNames(dto.lastNames());
-    setAdditionalInfos(dto.additionalInfos());
-  }
-
   public DocumentPerson(int id, DataTransferPerson dto) {
     setId(id);
     setFatherId(dto.fatherId());
