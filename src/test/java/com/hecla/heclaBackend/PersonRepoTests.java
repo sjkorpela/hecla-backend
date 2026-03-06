@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataMongoTest
 @Testcontainers
 @Import(PersonRepo.class)
-class PersonRepoTest {
+class PersonRepoTests {
 
   @Container
   @ServiceConnection
