@@ -42,6 +42,9 @@ public class PersonService {
   }
 
   public void updateById(int id, DataTransferPerson dtoPerson) {
+    if (dtoPerson == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No person given!");
+    }
     if (!repo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
