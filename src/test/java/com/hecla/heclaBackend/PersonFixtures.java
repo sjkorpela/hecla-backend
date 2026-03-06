@@ -20,6 +20,37 @@ public class PersonFixtures {
           List.of(new AdditionalInfo("Kengänkoko", "40"))
   );
 
+  public static final String erkkiJokinenJsonString = """
+          {
+            "fatherId": null,
+            "motherId": null,
+            "gender": "MALE",
+            "birthYear": 1900,
+            "birthPlace": "Turku",
+            "deceased": true,
+            "deathYear": 2000,
+            "deathPlace": "Helsinki",
+            "firstNames": [
+              {
+                "name": "Erkki",
+                "nickname": true
+              }
+            ],
+            "lastNames": [
+              {
+                "name": "Jokinen",
+                "current": true
+              }
+            ],
+            "additionalInfos": [
+              {
+                "key": "Kengänkoko",
+                "value": "40"
+              }
+            ]
+          }
+          """;
+
   public static final DataTransferPerson maijaKallioDto = new DataTransferPerson(
           null,
           null,

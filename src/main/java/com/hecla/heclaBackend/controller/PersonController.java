@@ -21,7 +21,7 @@ public class PersonController {
 
   @PostMapping("/persons")
   @ResponseStatus(HttpStatus.CREATED)
-  public DataTransferPerson createPerson(@RequestBody DataTransferPerson dtoPerson) throws BadRequestException {
+  public DataTransferPerson createPerson(@RequestBody DataTransferPerson dtoPerson) {
     return personService.createPerson(dtoPerson);
   }
 
@@ -36,7 +36,7 @@ public class PersonController {
   }
 
   @PutMapping("/persons/{id}")
-  public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) throws BadRequestException {
+  public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) {
     personService.updateById(id, person);
   }
 
