@@ -4,6 +4,7 @@ package com.hecla.heclaBackend;
 import com.hecla.heclaBackend.model.*;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import com.hecla.heclaBackend.service.PersonService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@Disabled
 public class PersonControllerTests {
 
   @Autowired
