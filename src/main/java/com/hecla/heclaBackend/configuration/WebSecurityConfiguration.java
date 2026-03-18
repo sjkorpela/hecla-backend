@@ -27,7 +27,7 @@ public class WebSecurityConfiguration {
                     .jwt(jwtc -> jwtc
                             .jwtAuthenticationConverter(jwtAuthenticationConverter)))
             .authorizeHttpRequests(requests -> requests
-                    .requestMatchers(HttpMethod.GET,    "/api/persons").permitAll()
+                    .requestMatchers(HttpMethod.GET,    "/api/persons").authenticated()
                     .requestMatchers(HttpMethod.POST,   "/api/persons").authenticated()
                     .requestMatchers(HttpMethod.PUT,    "/api/persons/**").authenticated()
                     .requestMatchers(HttpMethod.DELETE, "/api/persons/**").authenticated()
