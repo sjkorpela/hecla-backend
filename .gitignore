@@ -55,3 +55,6 @@ Thumbs.db
 
 ### VS Code ###
 .vscode/
+
+# Cypress secrets
+cypress/support/config.js

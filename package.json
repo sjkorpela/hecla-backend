@@ -1,0 +1,25 @@
+{
+  "name": "hecla-backend",
+  "version": "1.0.0",
+  "description": "Backend layers of HE/CLA project: * Maven Java Spring Boot backend as API request handler * MongoDB as backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://sjkorpela03@bitbucket.org/MikaJK/hecla-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/MikaJK/hecla-backend/issues"
+  },
+  "homepage": "https://bitbucket.org/MikaJK/hecla-backend#readme",
+  "devDependencies": {
+    "cypress": "^15.12.0"
+  }
+}
