@@ -1,0 +1,28 @@
+{
+  "fatherId": null,
+  "motherId": null,
+  "gender": "FEMALE",
+  "birthYear": 2000,
+  "birthPlace": "Joensuu",
+  "deceased": false,
+  "deathYear": null,
+  "deathPlace": null,
+  "firstNames": [
+    {
+      "name": "Maija",
+      "nickname": true
+    }
+  ],
+  "lastNames": [
+    {
+      "name": "Kallio",
+      "current": true
+    }
+  ],
+  "additionalInfos": [
+    {
+      "key": "Lempiväri",
+      "value": "Keltainen"
+    }
+  ]
+}

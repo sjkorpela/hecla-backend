@@ -1,0 +1,28 @@
+{
+  "fatherId": null,
+  "motherId": null,
+  "gender": "MALE",
+  "birthYear": 1900,
+  "birthPlace": "Turku",
+  "deceased": true,
+  "deathYear": 2000,
+  "deathPlace": "Helsinki",
+  "firstNames": [
+    {
+      "name": "Erkki",
+      "nickname": true
+    }
+  ],
+  "lastNames": [
+    {
+      "name": "Jokinen",
+      "current": true
+    }
+  ],
+  "additionalInfos": [
+    {
+      "key": "Kengänkoko",
+      "value": "40"
+    }
+  ]
+}

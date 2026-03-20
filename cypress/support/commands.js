@@ -10,24 +10,24 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+// Cypress.Commands.add("login", (email, password) => { ... })
 //
 //
 // -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
+// Cypress.Commands.add("drag", { prevSubject: "element"}, (subject, options) => { ... })
 //
 //
 // -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
+// Cypress.Commands.add("dismiss", { prevSubject: "optional"}, (subject, options) => { ... })
 //
 //
 // -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import { getCache, setCache } from './tokenCache';
-import { config } from './config';
+import { getCache, setCache } from "./tokenCache";
+import { config } from "./config";
 
-Cypress.Commands.add('getToken', () => {
+Cypress.Commands.add("getToken", () => {
   const { token, expiry } = getCache();
 
   if (token && expiry && Date.now() < expiry) {
@@ -35,11 +35,11 @@ Cypress.Commands.add('getToken', () => {
   }
 
   return cy.request({
-    method: 'POST',
+    method: "POST",
     url: config.TOKEN_URL,
     form: true,
     body: {
-      grant_type: 'client_credentials',
+      grant_type: "client_credentials",
       client_id: config.CLIENT_ID,
       client_secret: config.CLIENT_SECRET
     },
@@ -50,7 +50,7 @@ Cypress.Commands.add('getToken', () => {
   });
 });
 
-Cypress.Commands.add('authRequest', (options) => {
+Cypress.Commands.add("authRequest", (options) => {
   return cy.getToken().then((token) => {
     return cy.request({
       ...options,
