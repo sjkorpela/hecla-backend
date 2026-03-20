@@ -33,5 +33,10 @@ Needs:
 1. Run commands `./mvnw install` and `npm install`to install dependencies.
 2. Run Maven tests with command `./mvnw test` to test service and repository layers.
 3. Run command `./mvnw clean package -DskipTests && docker compose down && docker compose up --build` to build and run the server.
-4. Run Cypress tests with command `npm run cy:run` to test full stack.
+4. Run Cypress tests with command `npm run cy:run` to test API.
    * Cypress tests run on the live server, but shouldn't affect existing data.
+
+### AI usage ###
+
+Things AI has been used for during the project:
+* AI was used to get Cypress set up for API testing
