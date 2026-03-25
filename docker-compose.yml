@@ -19,9 +19,9 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data
 
-  hecla:
+  hecla-backend:
     build: .
-    container_name: hecla
+    container_name: hecla-backend
     ports:
       - "5000:5000"
     depends_on:
