@@ -12,12 +12,11 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.print.Doc;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -134,16 +133,20 @@ class PersonServiceTests {
     Pageable pageable = PageRequest.of(1, 1);
     Sort sort = Sort.by("birthYear");
 
-    when(repo.findAll(pageable, sort)).thenReturn(
-            List.of(
-                    new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
+    when(repo.findAll(pageable)).thenReturn(
+            new PageImpl<DocumentPerson>(
+                    List.of(
+                            new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
+                    ),
+                    pageable,
+                    3
             )
     );
 
-    List<DataTransferPerson> persons = personService.findAllPagedAndSorted(pageable, sort);
+    Page<DataTransferPerson> persons = personService.findAll(pageable);
 
-    assertEquals(1, persons.size());
-    assertEquals(inputPersons.get(1).birthYear(), persons.get(0).birthYear());
+    assertEquals(1, persons.getContent().size());
+    assertEquals(inputPersons.get(1).birthYear(), persons.getContent().get(0).birthYear());
   }
 
   @Test

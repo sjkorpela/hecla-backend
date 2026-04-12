@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -69,10 +70,10 @@ class PersonRepoTests {
 
     Pageable pageable = PageRequest.of(1, 2);
 
-    List<DocumentPerson> persons = repo.findAll(pageable, Sort.unsorted());
+    Page<DocumentPerson> persons = repo.findAll(pageable);
 
-    assertEquals(1, persons.size());
-    assertEquals(2, persons.getFirst().getId());
+    assertEquals(1, persons.getContent().size());
+    assertEquals(2, persons.getContent().get(0).getId());
   }
 
   @Test
@@ -84,14 +85,14 @@ class PersonRepoTests {
     List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
     inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
 
-    Sort sort = Sort.by("birthYear");
+    Pageable pageable = Pageable.unpaged(Sort.by("birthYear"));
 
-    List<DocumentPerson> persons = repo.findAll(Pageable.unpaged(), sort);
+    Page<DocumentPerson> persons = repo.findAll(pageable);
 
-    assertEquals(3, persons.size());
-    assertEquals(inputPersons.get(0).getBirthYear(), persons.get(0).getBirthYear());
-    assertEquals(inputPersons.get(1).getBirthYear(), persons.get(1).getBirthYear());
-    assertEquals(inputPersons.get(2).getBirthYear(), persons.get(2).getBirthYear());
+    assertEquals(3, persons.getContent().size());
+    assertEquals(inputPersons.get(0).getBirthYear(), persons.getContent().get(0).getBirthYear());
+    assertEquals(inputPersons.get(1).getBirthYear(), persons.getContent().get(1).getBirthYear());
+    assertEquals(inputPersons.get(2).getBirthYear(), persons.getContent().get(2).getBirthYear());
   }
 
   @Test
@@ -103,13 +104,12 @@ class PersonRepoTests {
     List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
     inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
 
-    Pageable pageable = PageRequest.of(1, 1);
-    Sort sort = Sort.by("birthYear");
+    Pageable pageable = PageRequest.of(1, 1, Sort.by("birthYear"));
 
-    List<DocumentPerson> persons = repo.findAll(pageable, sort);
+    Page<DocumentPerson> persons = repo.findAll(pageable);
 
-    assertEquals(1, persons.size());
-    assertEquals(inputPersons.get(1).getBirthYear(), persons.get(0).getBirthYear());
+    assertEquals(1, persons.getContent().size());
+    assertEquals(inputPersons.get(1).getBirthYear(), persons.getContent().get(0).getBirthYear());
   }
 
   @Test
