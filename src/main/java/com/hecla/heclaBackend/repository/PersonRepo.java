@@ -2,6 +2,7 @@ package com.hecla.heclaBackend.repository;
 
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
+import com.hecla.heclaBackend.model.PersonsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,9 +31,32 @@ public class PersonRepo {
     return repo.findAll(DocumentPerson.class);
   }
 
-  public Page<DocumentPerson> findAll(Pageable pageable) {
+  public Page<DocumentPerson> findAll(Pageable pageable, PersonsFilter filter) {
     Query query = new Query();
     query.with(pageable);
+
+    if (filter.deceased() != null && filter.deceased()) query.addCriteria(
+            Criteria.where("deceased").is(true)
+    );
+    if (filter.deceased() != null && !filter.deceased()) query.addCriteria(new Criteria().orOperator(
+            Criteria.where("deceased").is(false),
+            Criteria.where("deceased").isNull()
+    ));
+    if (filter.gender() != null) query.addCriteria(
+            Criteria.where("gender").is(filter.gender())
+    );
+    if (filter.bornAfter() != null) query.addCriteria(
+            Criteria.where("birthYear").gt(filter.bornAfter())
+    );
+    if (filter.bornBefore() != null) query.addCriteria(
+            Criteria.where("birthYear").lt(filter.bornBefore())
+    );
+    if (filter.diedAfter() != null) query.addCriteria(
+            Criteria.where("deathYear").gt(filter.diedAfter())
+    );
+    if (filter.diedBefore() != null) query.addCriteria(
+            Criteria.where("deathYear").lt(filter.diedBefore())
+    );
 
     List<DocumentPerson> persons = repo.find(query, DocumentPerson.class);
     long count = repo.count(query, DocumentPerson.class);

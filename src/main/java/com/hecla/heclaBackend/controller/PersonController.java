@@ -1,7 +1,10 @@
 package com.hecla.heclaBackend.controller;
 
 import com.hecla.heclaBackend.model.DataTransferPerson;
+import com.hecla.heclaBackend.model.DocumentPerson;
+import com.hecla.heclaBackend.model.PersonsFilter;
 import com.hecla.heclaBackend.service.PersonService;
+import com.sun.tools.jconsole.JConsoleContext;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,9 +33,24 @@ public class PersonController {
 
   @GetMapping("/persons")
   public Page<DataTransferPerson> readAllPersonsPaged(
+          @RequestParam(required = false) Boolean deceased,
+          @RequestParam(required = false) DocumentPerson.Gender gender,
+          @RequestParam(required = false) Integer bornAfter,
+          @RequestParam(required = false) Integer bornBefore,
+          @RequestParam(required = false) Integer diedAfter,
+          @RequestParam(required = false) Integer diedBefore,
           Pageable pageable
   ) {
-    return personService.findAll(pageable);
+    PersonsFilter filter = new PersonsFilter(
+            deceased,
+            gender,
+            bornAfter,
+            bornBefore,
+            diedAfter,
+            diedBefore
+    );
+
+    return personService.findAll(pageable, filter);
   }
 
   @GetMapping("/persons/{id}")

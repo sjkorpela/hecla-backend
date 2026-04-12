@@ -2,6 +2,7 @@ package com.hecla.heclaBackend.service;
 
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
+import com.hecla.heclaBackend.model.PersonsFilter;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class PersonService {
     return persons.stream().map(DocumentPerson::toDataTransferPerson).toList();
   }
 
-  public Page<DataTransferPerson> findAll(Pageable pageable) {
-    Page<DocumentPerson> persons = repo.findAll(pageable);
+  public Page<DataTransferPerson> findAll(Pageable pageable, PersonsFilter filter) {
+    Page<DocumentPerson> persons = repo.findAll(pageable, filter);
     return persons.map(DocumentPerson::toDataTransferPerson);
   }
 

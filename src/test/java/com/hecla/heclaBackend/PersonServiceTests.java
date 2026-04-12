@@ -2,6 +2,7 @@ package com.hecla.heclaBackend;
 
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
+import com.hecla.heclaBackend.model.PersonsFilter;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import com.hecla.heclaBackend.service.PersonService;
 import com.hecla.heclaBackend.service.ValidationService;
@@ -131,9 +132,8 @@ class PersonServiceTests {
     inputPersons.sort(Comparator.comparing(DataTransferPerson::birthYear));
 
     Pageable pageable = PageRequest.of(1, 1);
-    Sort sort = Sort.by("birthYear");
 
-    when(repo.findAll(pageable)).thenReturn(
+    when(repo.findAll(pageable, PersonsFilter.unfiltered())).thenReturn(
             new PageImpl<DocumentPerson>(
                     List.of(
                             new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
@@ -143,7 +143,7 @@ class PersonServiceTests {
             )
     );
 
-    Page<DataTransferPerson> persons = personService.findAll(pageable);
+    Page<DataTransferPerson> persons = personService.findAll(pageable, PersonsFilter.unfiltered());
 
     assertEquals(1, persons.getContent().size());
     assertEquals(inputPersons.get(1).birthYear(), persons.getContent().get(0).birthYear());

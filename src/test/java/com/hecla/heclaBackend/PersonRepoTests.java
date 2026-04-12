@@ -3,6 +3,7 @@ package com.hecla.heclaBackend;
 import com.hecla.heclaBackend.model.*;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
@@ -70,7 +71,7 @@ class PersonRepoTests {
 
     Pageable pageable = PageRequest.of(1, 2);
 
-    Page<DocumentPerson> persons = repo.findAll(pageable);
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
 
     assertEquals(1, persons.getContent().size());
     assertEquals(2, persons.getContent().get(0).getId());
@@ -87,7 +88,7 @@ class PersonRepoTests {
 
     Pageable pageable = Pageable.unpaged(Sort.by("birthYear"));
 
-    Page<DocumentPerson> persons = repo.findAll(pageable);
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
 
     assertEquals(3, persons.getContent().size());
     assertEquals(inputPersons.get(0).getBirthYear(), persons.getContent().get(0).getBirthYear());
@@ -106,7 +107,7 @@ class PersonRepoTests {
 
     Pageable pageable = PageRequest.of(1, 1, Sort.by("birthYear"));
 
-    Page<DocumentPerson> persons = repo.findAll(pageable);
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
 
     assertEquals(1, persons.getContent().size());
     assertEquals(inputPersons.get(1).getBirthYear(), persons.getContent().get(0).getBirthYear());
