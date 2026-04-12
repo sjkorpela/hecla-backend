@@ -4,6 +4,8 @@ import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.service.PersonService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +28,19 @@ public class PersonController {
   }
 
   @GetMapping("/persons")
-  public List<DataTransferPerson> readAllPersons() {
-    return personService.findAll();
+  public List<DataTransferPerson> readAllPersons(
+          Pageable pageable,
+          Sort sort
+  ) {
+    return personService.findAllPagedAndSorted(pageable, sort);
   }
 
   @GetMapping("/persons/{id}")
   public DataTransferPerson readPersonById(@PathVariable int id) {
     return personService.findById(id);
   }
+
+
 
   @PutMapping("/persons/{id}")
   public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) {

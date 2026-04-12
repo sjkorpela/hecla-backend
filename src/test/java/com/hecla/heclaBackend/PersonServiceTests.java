@@ -12,9 +12,14 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,7 +93,6 @@ class PersonServiceTests {
 
   @Test
   void createSeveralPersonsWithDataAndFindAll() {
-
     when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
             .thenReturn(new DocumentPerson(0, PersonFixtures.erkkiJokinenDto));
     DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.erkkiJokinenDto);
@@ -110,7 +114,36 @@ class PersonServiceTests {
     List<DataTransferPerson> persons = personService.findAll();
 
     assertEquals(3, persons.size());
+  }
 
+  @Test
+  void createSeveralPersonsWithDataAndFindAllPagedAndSorted() {
+    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
+            .thenReturn(new DocumentPerson(0, PersonFixtures.erkkiJokinenDto));
+    DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.erkkiJokinenDto);
+    when(repo.createPerson(PersonFixtures.maijaKallioDto))
+            .thenReturn(new DocumentPerson(1, PersonFixtures.maijaKallioDto));
+    DataTransferPerson dtoPerson2 = personService.createPerson(PersonFixtures.maijaKallioDto);
+    when(repo.createPerson(PersonFixtures.jussiLindstromDto))
+            .thenReturn(new DocumentPerson(2, PersonFixtures.jussiLindstromDto));
+    DataTransferPerson dtoPerson3 = personService.createPerson(PersonFixtures.jussiLindstromDto);
+
+    List<DataTransferPerson> inputPersons = Arrays.asList(dtoPerson1, dtoPerson2, dtoPerson3);
+    inputPersons.sort(Comparator.comparing(DataTransferPerson::birthYear));
+
+    Pageable pageable = PageRequest.of(1, 1);
+    Sort sort = Sort.by("birthYear");
+
+    when(repo.findAll(pageable, sort)).thenReturn(
+            List.of(
+                    new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
+            )
+    );
+
+    List<DataTransferPerson> persons = personService.findAllPagedAndSorted(pageable, sort);
+
+    assertEquals(1, persons.size());
+    assertEquals(inputPersons.get(1).birthYear(), persons.get(0).birthYear());
   }
 
   @Test

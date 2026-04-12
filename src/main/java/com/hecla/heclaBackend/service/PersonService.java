@@ -5,6 +5,9 @@ import com.hecla.heclaBackend.model.DocumentPerson;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +33,11 @@ public class PersonService {
 
   public List<DataTransferPerson> findAll() {
     List<DocumentPerson> persons = repo.findAll();
+    return persons.stream().map(DocumentPerson::toDataTransferPerson).toList();
+  }
+
+  public List<DataTransferPerson> findAllPagedAndSorted(Pageable pageable, Sort sort) {
+    List<DocumentPerson> persons = repo.findAll(pageable, sort);
     return persons.stream().map(DocumentPerson::toDataTransferPerson).toList();
   }
 

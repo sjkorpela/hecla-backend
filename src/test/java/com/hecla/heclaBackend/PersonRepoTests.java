@@ -8,9 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mongodb.MongoDBContainer;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +59,57 @@ class PersonRepoTests {
     DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
 
     assertEquals(3, repo.findAll().size());
+  }
+
+  @Test
+  void createSeveralPersonsWithDataAndPageThem() {
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+
+    Pageable pageable = PageRequest.of(1, 2);
+
+    List<DocumentPerson> persons = repo.findAll(pageable, Sort.unsorted());
+
+    assertEquals(1, persons.size());
+    assertEquals(2, persons.getFirst().getId());
+  }
+
+  @Test
+  void createSeveralPersonsWithDataAndSortThem() {
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+
+    List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
+    inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
+
+    Sort sort = Sort.by("birthYear");
+
+    List<DocumentPerson> persons = repo.findAll(Pageable.unpaged(), sort);
+
+    assertEquals(3, persons.size());
+    assertEquals(inputPersons.get(0).getBirthYear(), persons.get(0).getBirthYear());
+    assertEquals(inputPersons.get(1).getBirthYear(), persons.get(1).getBirthYear());
+    assertEquals(inputPersons.get(2).getBirthYear(), persons.get(2).getBirthYear());
+  }
+
+  @Test
+  void createSeveralPersonsWithDataAndSortAndPageThem() {
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+
+    List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
+    inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
+
+    Pageable pageable = PageRequest.of(1, 1);
+    Sort sort = Sort.by("birthYear");
+
+    List<DocumentPerson> persons = repo.findAll(pageable, sort);
+
+    assertEquals(1, persons.size());
+    assertEquals(inputPersons.get(1).getBirthYear(), persons.get(0).getBirthYear());
   }
 
   @Test

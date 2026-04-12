@@ -3,12 +3,14 @@ package com.hecla.heclaBackend.repository;
 import com.hecla.heclaBackend.model.DataTransferPerson;
 import com.hecla.heclaBackend.model.DocumentPerson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Repository
@@ -24,6 +26,14 @@ public class PersonRepo {
 
   public List<DocumentPerson> findAll() {
     return repo.findAll(DocumentPerson.class);
+  }
+
+  public List<DocumentPerson> findAll(Pageable pageable, Sort sort) {
+    Query query = new Query();
+    query.with(pageable);
+    query.with(sort);
+
+    return repo.find(query, DocumentPerson.class);
   }
 
   public DocumentPerson findById(int id) {
