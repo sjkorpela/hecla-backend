@@ -39,6 +39,7 @@ public class PersonController {
           @RequestParam(required = false) Integer bornBefore,
           @RequestParam(required = false) Integer diedAfter,
           @RequestParam(required = false) Integer diedBefore,
+          @RequestParam(required = false) String search,
           Pageable pageable
   ) {
     PersonsFilter filter = new PersonsFilter(
@@ -50,15 +51,13 @@ public class PersonController {
             diedBefore
     );
 
-    return personService.findAll(pageable, filter);
+    return personService.findAll(pageable, filter, search);
   }
 
   @GetMapping("/persons/{id}")
   public DataTransferPerson readPersonById(@PathVariable int id) {
     return personService.findById(id);
   }
-
-
 
   @PutMapping("/persons/{id}")
   public void updatePersonById(@PathVariable int id, @RequestBody DataTransferPerson person) {

@@ -11,10 +11,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Repository;
 
 import javax.print.Doc;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class PersonRepo {
@@ -31,8 +34,9 @@ public class PersonRepo {
     return repo.findAll(DocumentPerson.class);
   }
 
-  public Page<DocumentPerson> findAll(Pageable pageable, PersonsFilter filter) {
+  public Page<DocumentPerson> findAll(Pageable pageable, PersonsFilter filter, String search) {
     Query query = new Query();
+
     query.with(pageable);
 
     if (filter.deceased() != null && filter.deceased()) query.addCriteria(
@@ -57,6 +61,17 @@ public class PersonRepo {
     if (filter.diedBefore() != null) query.addCriteria(
             Criteria.where("deathYear").lt(filter.diedBefore())
     );
+
+    if (search != null)  {
+      Pattern pattern = Pattern.compile(
+              Pattern.quote(search),
+              Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE
+      );
+      query.addCriteria(new Criteria().orOperator(
+              Criteria.where("firstNames.name").regex(pattern),
+              Criteria.where("lastNames.name").regex(pattern)
+      ));
+    }
 
     List<DocumentPerson> persons = repo.find(query, DocumentPerson.class);
     long count = repo.count(query, DocumentPerson.class);

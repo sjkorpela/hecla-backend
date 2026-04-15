@@ -71,7 +71,7 @@ class PersonRepoTests {
 
     Pageable pageable = PageRequest.of(1, 2);
 
-    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered(), null);
 
     assertEquals(1, persons.getContent().size());
     assertEquals(2, persons.getContent().get(0).getId());
@@ -88,7 +88,7 @@ class PersonRepoTests {
 
     Pageable pageable = Pageable.unpaged(Sort.by("birthYear"));
 
-    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered(), null);
 
     assertEquals(3, persons.getContent().size());
     assertEquals(inputPersons.get(0).getBirthYear(), persons.getContent().get(0).getBirthYear());
@@ -107,7 +107,7 @@ class PersonRepoTests {
 
     Pageable pageable = PageRequest.of(1, 1, Sort.by("birthYear"));
 
-    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered());
+    Page<DocumentPerson> persons = repo.findAll(pageable, PersonsFilter.unfiltered(), null);
 
     assertEquals(1, persons.getContent().size());
     assertEquals(inputPersons.get(1).getBirthYear(), persons.getContent().get(0).getBirthYear());

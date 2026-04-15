@@ -37,8 +37,8 @@ public class PersonService {
     return persons.stream().map(DocumentPerson::toDataTransferPerson).toList();
   }
 
-  public Page<DataTransferPerson> findAll(Pageable pageable, PersonsFilter filter) {
-    Page<DocumentPerson> persons = repo.findAll(pageable, filter);
+  public Page<DataTransferPerson> findAll(Pageable pageable, PersonsFilter filter, String search) {
+    Page<DocumentPerson> persons = repo.findAll(pageable, filter, search);
     return persons.map(DocumentPerson::toDataTransferPerson);
   }
 

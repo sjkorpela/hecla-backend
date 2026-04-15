@@ -133,7 +133,7 @@ class PersonServiceTests {
 
     Pageable pageable = PageRequest.of(1, 1);
 
-    when(repo.findAll(pageable, PersonsFilter.unfiltered())).thenReturn(
+    when(repo.findAll(pageable, PersonsFilter.unfiltered(), null)).thenReturn(
             new PageImpl<DocumentPerson>(
                     List.of(
                             new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
@@ -143,7 +143,11 @@ class PersonServiceTests {
             )
     );
 
-    Page<DataTransferPerson> persons = personService.findAll(pageable, PersonsFilter.unfiltered());
+    Page<DataTransferPerson> persons = personService.findAll(
+            pageable,
+            PersonsFilter.unfiltered(),
+            null
+    );
 
     assertEquals(1, persons.getContent().size());
     assertEquals(inputPersons.get(1).birthYear(), persons.getContent().get(0).birthYear());
