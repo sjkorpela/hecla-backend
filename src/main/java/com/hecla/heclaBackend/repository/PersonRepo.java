@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -39,39 +40,93 @@ public class PersonRepo {
 
     query.with(pageable);
 
-    if (filter.deceased() != null && filter.deceased()) query.addCriteria(
-            Criteria.where("deceased").is(true)
-    );
-    if (filter.deceased() != null && !filter.deceased()) query.addCriteria(new Criteria().orOperator(
+    Criteria filterCriteria = new Criteria();
+
+    if (filter.deceased() != null && filter.deceased())
+      filterCriteria.and("deceased").is(true);
+    if (filter.deceased() != null && !filter.deceased())
+      filterCriteria.andOperator(new Criteria().orOperator(
             Criteria.where("deceased").is(false),
             Criteria.where("deceased").isNull()
     ));
-    if (filter.gender() != null) query.addCriteria(
-            Criteria.where("gender").is(filter.gender())
-    );
-    if (filter.bornAfter() != null) query.addCriteria(
-            Criteria.where("birthYear").gt(filter.bornAfter())
-    );
-    if (filter.bornBefore() != null) query.addCriteria(
-            Criteria.where("birthYear").lt(filter.bornBefore())
-    );
-    if (filter.diedAfter() != null) query.addCriteria(
-            Criteria.where("deathYear").gt(filter.diedAfter())
-    );
-    if (filter.diedBefore() != null) query.addCriteria(
-            Criteria.where("deathYear").lt(filter.diedBefore())
-    );
+    if (filter.gender() != null) filterCriteria.and("gender").is(filter.gender());
+
+    if (filter.bornAfter() != null && filter.bornBefore() != null) {
+      filterCriteria.and("birthYear").gte(filter.bornAfter()).lte(filter.bornBefore());
+    } else if (filter.bornAfter() != null) {
+      filterCriteria.and("birthYear").gte(filter.bornAfter());
+    } else if (filter.bornBefore() != null) {
+      filterCriteria.and("birthYear").lte(filter.bornBefore());
+    }
+
+    if (filter.diedAfter() != null && filter.diedBefore() != null) {
+      filterCriteria.and("deathYear").gte(filter.diedAfter()).lte(filter.diedBefore());
+    } else if (filter.diedAfter() != null) {
+      filterCriteria.and("deathYear").gte(filter.diedAfter());
+    } else if (filter.diedBefore() != null) {
+      filterCriteria.and("deathYear").lte(filter.diedBefore());
+    }
 
     if (search != null)  {
       Pattern pattern = Pattern.compile(
               Pattern.quote(search),
               Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE
       );
-      query.addCriteria(new Criteria().orOperator(
+      filterCriteria.andOperator(new Criteria().orOperator(
               Criteria.where("firstNames.name").regex(pattern),
               Criteria.where("lastNames.name").regex(pattern)
       ));
     }
+
+    if (pageable.getSort().getOrderFor("name") != null) {
+      MatchOperation match = Aggregation.match(filterCriteria);
+
+      AggregationExpression nicknameFirstName = ArrayOperators.ArrayElemAt.arrayOf(
+              ArrayOperators.Filter.filter("firstNames")
+                      .as("fn")
+                      .by(ComparisonOperators.Eq.valueOf("$$fn.nickname").equalToValue(true))
+      ).elementAt(0);
+
+      AggregationExpression currentLastName = ArrayOperators.ArrayElemAt.arrayOf(
+              ArrayOperators.Filter.filter("lastNames")
+                      .as("ln")
+                      .by(ComparisonOperators.Eq.valueOf("$$ln.current").equalToValue(true))
+      ).elementAt(0);
+
+      AddFieldsOperation addFields = Aggregation.addFields()
+              .addFieldWithValue("_sortFirstName", nicknameFirstName)
+              .addFieldWithValue("_sortLastName", currentLastName)
+              .build();
+
+      Sort.Direction direction = pageable.getSort().getOrderFor("name").getDirection();
+
+      SortOperation nameSort = Aggregation.sort(
+              Sort.by(direction, "_sortFirstName.name")
+                      .and(Sort.by(direction, "_sortLastName.name"))
+      );
+
+
+      SkipOperation skip = Aggregation.skip((long) pageable.getPageNumber() * pageable.getPageSize());
+      LimitOperation limit = Aggregation.limit(pageable.getPageSize());
+
+      Aggregation aggregation = Aggregation.newAggregation(
+              DocumentPerson.class,
+              match,
+              addFields,
+              nameSort,
+              skip,
+              limit
+      );
+
+      List<DocumentPerson> results = repo.aggregate(aggregation, DocumentPerson.class, DocumentPerson.class)
+              .getMappedResults();
+
+      long count = repo.count(new Query(), DocumentPerson.class);
+
+      return new PageImpl<>(results, pageable, count);
+    }
+
+    query.addCriteria(filterCriteria);
 
     List<DocumentPerson> persons = repo.find(query, DocumentPerson.class);
     long count = repo.count(query, DocumentPerson.class);
