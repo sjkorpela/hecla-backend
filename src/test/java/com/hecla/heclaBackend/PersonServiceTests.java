@@ -6,10 +6,8 @@ import com.hecla.heclaBackend.model.PersonsFilter;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import com.hecla.heclaBackend.service.PersonService;
 import com.hecla.heclaBackend.service.ValidationService;
-import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.print.Doc;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -72,11 +69,11 @@ class PersonServiceTests {
     when(repo.getNextId()).thenReturn(0);
     int expectedId = repo.getNextId();
 
-    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
-            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.erkkiJokinenDto));
-    DataTransferPerson createdPerson = personService.createPerson(PersonFixtures.erkkiJokinenDto);
+    when(repo.createPerson(PersonFixtures.akuAnkkadDto))
+            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.akuAnkkadDto));
+    DataTransferPerson createdPerson = personService.createPerson(PersonFixtures.akuAnkkadDto);
 
-    DocumentPerson expectedPerson = new DocumentPerson(expectedId, PersonFixtures.erkkiJokinenDto);
+    DocumentPerson expectedPerson = new DocumentPerson(expectedId, PersonFixtures.akuAnkkadDto);
     when(repo.findById(expectedId)).thenReturn(expectedPerson);
 
     DataTransferPerson resultPerson = personService.findById(expectedId);
@@ -93,21 +90,21 @@ class PersonServiceTests {
 
   @Test
   void createSeveralPersonsWithDataAndFindAll() {
-    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
-            .thenReturn(new DocumentPerson(0, PersonFixtures.erkkiJokinenDto));
-    DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.erkkiJokinenDto);
-    when(repo.createPerson(PersonFixtures.maijaKallioDto))
-            .thenReturn(new DocumentPerson(1, PersonFixtures.maijaKallioDto));
-    DataTransferPerson dtoPerson2 = personService.createPerson(PersonFixtures.maijaKallioDto);
-    when(repo.createPerson(PersonFixtures.jussiLindstromDto))
-            .thenReturn(new DocumentPerson(2, PersonFixtures.jussiLindstromDto));
-    DataTransferPerson dtoPerson3 = personService.createPerson(PersonFixtures.jussiLindstromDto);
+    when(repo.createPerson(PersonFixtures.akuAnkkadDto))
+            .thenReturn(new DocumentPerson(0, PersonFixtures.akuAnkkadDto));
+    DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.akuAnkkadDto);
+    when(repo.createPerson(PersonFixtures.iinesAnkkaDto))
+            .thenReturn(new DocumentPerson(1, PersonFixtures.iinesAnkkaDto));
+    DataTransferPerson dtoPerson2 = personService.createPerson(PersonFixtures.iinesAnkkaDto);
+    when(repo.createPerson(PersonFixtures.hannuHanhiDto))
+            .thenReturn(new DocumentPerson(2, PersonFixtures.hannuHanhiDto));
+    DataTransferPerson dtoPerson3 = personService.createPerson(PersonFixtures.hannuHanhiDto);
 
     when(repo.findAll()).thenReturn(
             List.of(
-                    new DocumentPerson(0, PersonFixtures.erkkiJokinenDto),
-                    new DocumentPerson(1, PersonFixtures.maijaKallioDto),
-                    new DocumentPerson(2, PersonFixtures.jussiLindstromDto)
+                    new DocumentPerson(0, PersonFixtures.akuAnkkadDto),
+                    new DocumentPerson(1, PersonFixtures.iinesAnkkaDto),
+                    new DocumentPerson(2, PersonFixtures.hannuHanhiDto)
             )
     );
 
@@ -118,15 +115,15 @@ class PersonServiceTests {
 
   @Test
   void createSeveralPersonsWithDataAndFindAllPagedAndSorted() {
-    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
-            .thenReturn(new DocumentPerson(0, PersonFixtures.erkkiJokinenDto));
-    DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.erkkiJokinenDto);
-    when(repo.createPerson(PersonFixtures.maijaKallioDto))
-            .thenReturn(new DocumentPerson(1, PersonFixtures.maijaKallioDto));
-    DataTransferPerson dtoPerson2 = personService.createPerson(PersonFixtures.maijaKallioDto);
-    when(repo.createPerson(PersonFixtures.jussiLindstromDto))
-            .thenReturn(new DocumentPerson(2, PersonFixtures.jussiLindstromDto));
-    DataTransferPerson dtoPerson3 = personService.createPerson(PersonFixtures.jussiLindstromDto);
+    when(repo.createPerson(PersonFixtures.akuAnkkadDto))
+            .thenReturn(new DocumentPerson(0, PersonFixtures.akuAnkkadDto));
+    DataTransferPerson dtoPerson1 = personService.createPerson(PersonFixtures.akuAnkkadDto);
+    when(repo.createPerson(PersonFixtures.iinesAnkkaDto))
+            .thenReturn(new DocumentPerson(1, PersonFixtures.iinesAnkkaDto));
+    DataTransferPerson dtoPerson2 = personService.createPerson(PersonFixtures.iinesAnkkaDto);
+    when(repo.createPerson(PersonFixtures.hannuHanhiDto))
+            .thenReturn(new DocumentPerson(2, PersonFixtures.hannuHanhiDto));
+    DataTransferPerson dtoPerson3 = personService.createPerson(PersonFixtures.hannuHanhiDto);
 
     List<DataTransferPerson> inputPersons = Arrays.asList(dtoPerson1, dtoPerson2, dtoPerson3);
     inputPersons.sort(Comparator.comparing(DataTransferPerson::birthYear));
@@ -136,7 +133,7 @@ class PersonServiceTests {
     when(repo.findAll(pageable, PersonsFilter.unfiltered(), null)).thenReturn(
             new PageImpl<DocumentPerson>(
                     List.of(
-                            new DocumentPerson(1, PersonFixtures.jussiLindstromDto)
+                            new DocumentPerson(1, PersonFixtures.hannuHanhiDto)
                     ),
                     pageable,
                     3
@@ -158,15 +155,15 @@ class PersonServiceTests {
     when(repo.getNextId()).thenReturn(0);
     int expectedId = repo.getNextId();
 
-    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
-            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.erkkiJokinenDto));
+    when(repo.createPerson(PersonFixtures.akuAnkkadDto))
+            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.akuAnkkadDto));
     DataTransferPerson createdPerson = null;
 
-    createdPerson = personService.createPerson(PersonFixtures.erkkiJokinenDto);
+    createdPerson = personService.createPerson(PersonFixtures.akuAnkkadDto);
     when(repo.existsById(expectedId)).thenReturn(true);
-    personService.updateById(expectedId, PersonFixtures.maijaKallioDto);
+    personService.updateById(expectedId, PersonFixtures.iinesAnkkaDto);
 
-    DocumentPerson expectedPerson = new DocumentPerson(expectedId, PersonFixtures.maijaKallioDto);
+    DocumentPerson expectedPerson = new DocumentPerson(expectedId, PersonFixtures.iinesAnkkaDto);
     when(repo.findById(expectedId)).thenReturn(expectedPerson);
 
     DataTransferPerson resultPerson = personService.findById(expectedId);
@@ -181,7 +178,7 @@ class PersonServiceTests {
 
     ResponseStatusException exception = assertThrows(
             ResponseStatusException.class,
-            () -> personService.updateById(-1, PersonFixtures.erkkiJokinenDto)
+            () -> personService.updateById(-1, PersonFixtures.akuAnkkadDto)
     );
     assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
   }
@@ -200,9 +197,9 @@ class PersonServiceTests {
     when(repo.getNextId()).thenReturn(0);
     int expectedId = repo.getNextId();
 
-    when(repo.createPerson(PersonFixtures.erkkiJokinenDto))
-            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.erkkiJokinenDto));
-    DataTransferPerson createdPerson = personService.createPerson(PersonFixtures.erkkiJokinenDto);
+    when(repo.createPerson(PersonFixtures.akuAnkkadDto))
+            .thenReturn(new DocumentPerson(expectedId, PersonFixtures.akuAnkkadDto));
+    DataTransferPerson createdPerson = personService.createPerson(PersonFixtures.akuAnkkadDto);
     personService.deleteById(expectedId);
     personService.deleteById(expectedId);
     personService.deleteById(expectedId);

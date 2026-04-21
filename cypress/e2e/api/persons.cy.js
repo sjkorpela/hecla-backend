@@ -45,7 +45,7 @@ describe("Persons API", () => {
 
 
   it("POST /api/persons returns 401 without authentication", () => {
-    cy.fixture("erkkiJokinen").then((person) => {
+    cy.fixture("akuAnkka").then((person) => {
       cy.request({
         method: "POST",
         url: "/api/persons",
@@ -58,7 +58,7 @@ describe("Persons API", () => {
   });
 
   it("POST /api/persons returns 201 with authentication, created id is saved", () => {
-    cy.fixture("erkkiJokinen").then((person) => {
+    cy.fixture("akuAnkka").then((person) => {
       cy.authRequest({
         method: "POST",
         url: "/api/persons",
@@ -98,7 +98,7 @@ describe("Persons API", () => {
 
 
   it("PUT /api/persons returns 401 without authentication", () => {
-    cy.fixture("maijaKallio").then((person) => {
+    cy.fixture("iinesAnkka").then((person) => {
       cy.request({
         method: "PUT",
         url: "/api/persons/" + createdId,
@@ -111,7 +111,7 @@ describe("Persons API", () => {
   });
 
   it("PUT /api/persons returns 200 with authentication", () => {
-    cy.fixture("maijaKallio").then((person) => {
+    cy.fixture("iinesAnkka").then((person) => {
       cy.authRequest({
         method: "PUT",
         url: "/api/persons/" + createdId,

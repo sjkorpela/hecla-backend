@@ -3,7 +3,6 @@ package com.hecla.heclaBackend;
 import com.hecla.heclaBackend.model.*;
 import com.hecla.heclaBackend.repository.PersonRepo;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
@@ -50,24 +49,24 @@ class PersonRepoTests {
 
   @Test
   void createPersonAndFindPersonWithData() {
-    DocumentPerson docPerson = repo.createPerson(PersonFixtures.erkkiJokinenDto);
+    DocumentPerson docPerson = repo.createPerson(PersonFixtures.akuAnkkadDto);
     assertEquals(docPerson, repo.findById(docPerson.getId()));
   }
 
   @Test
   void createSeveralPersonsWithDataAndFindAll() {
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     assertEquals(3, repo.findAll().size());
   }
 
   @Test
   void createSeveralPersonsWithDataAndPageThem() {
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     Pageable pageable = PageRequest.of(1, 2);
 
@@ -79,9 +78,9 @@ class PersonRepoTests {
 
   @Test
   void createSeveralPersonsWithDataAndSortThem() {
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
     inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
@@ -98,9 +97,9 @@ class PersonRepoTests {
 
   @Test
   void createSeveralPersonsWithDataAndSortAndPageThem() {
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     List<DocumentPerson> inputPersons = Arrays.asList(docPerson1, docPerson2, docPerson3);
     inputPersons.sort(Comparator.comparing(DocumentPerson::getBirthYear));
@@ -125,12 +124,12 @@ class PersonRepoTests {
 
   @Test
   void updateByIdWorks() {
-    DocumentPerson docPerson = repo.createPerson(PersonFixtures.maijaKallioDto);
+    DocumentPerson docPerson = repo.createPerson(PersonFixtures.iinesAnkkaDto);
 
-    repo.updatePersonById(docPerson.getId(), PersonFixtures.erkkiJokinenDto);
+    repo.updatePersonById(docPerson.getId(), PersonFixtures.akuAnkkadDto);
     DocumentPerson expectedPerson = new DocumentPerson(
             docPerson.getId(),
-            PersonFixtures.erkkiJokinenDto
+            PersonFixtures.akuAnkkadDto
     );
 
     assertEquals(
@@ -141,7 +140,7 @@ class PersonRepoTests {
 
   @Test
   void deleteByIdWorks() {
-    DocumentPerson docPerson = repo.createPerson(PersonFixtures.erkkiJokinenDto);
+    DocumentPerson docPerson = repo.createPerson(PersonFixtures.akuAnkkadDto);
     repo.deleteById(docPerson.getId());
     assertNull(repo.findById(docPerson.getId()));
   }
@@ -152,7 +151,7 @@ class PersonRepoTests {
 
     assertFalse(repo.existsById(nextId));
 
-    DocumentPerson docPerson = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     assertTrue(repo.existsById(nextId));
   }
@@ -161,18 +160,18 @@ class PersonRepoTests {
   void getNextIdWorks() {
     assertEquals(0, repo.getNextId());
 
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     assertEquals(docPerson3.getId() + 1, repo.getNextId());
   }
 
   @Test
   void dropCollectionWorks() {
-    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.erkkiJokinenDto);
-    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.maijaKallioDto);
-    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.jussiLindstromDto);
+    DocumentPerson docPerson1 = repo.createPerson(PersonFixtures.akuAnkkadDto);
+    DocumentPerson docPerson2 = repo.createPerson(PersonFixtures.iinesAnkkaDto);
+    DocumentPerson docPerson3 = repo.createPerson(PersonFixtures.hannuHanhiDto);
 
     repo.dropCollection();
 

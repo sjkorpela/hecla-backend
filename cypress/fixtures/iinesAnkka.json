@@ -9,20 +9,20 @@
   "deathPlace": null,
   "firstNames": [
     {
-      "name": "Maija",
+      "name": "Iines",
       "nickname": true
     }
   ],
   "lastNames": [
     {
-      "name": "Kallio",
+      "name": "Ankka",
       "current": true
     }
   ],
   "additionalInfos": [
     {
       "key": "Lempiväri",
-      "value": "Keltainen"
+      "value": "Pinkki"
     }
   ]
 }

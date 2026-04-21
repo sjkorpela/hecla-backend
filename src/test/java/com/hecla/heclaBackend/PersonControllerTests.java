@@ -2,11 +2,9 @@ package com.hecla.heclaBackend;
 
 
 import com.hecla.heclaBackend.model.*;
-import com.hecla.heclaBackend.repository.PersonRepo;
 import com.hecla.heclaBackend.service.PersonService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -14,14 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -47,16 +43,16 @@ public class PersonControllerTests {
 
   @Test
   void postPersonReturnOkAndReturnPostedPersonAndGetPersonReturnOkAndPostedPerson() {
-    given(personService.createPerson(PersonFixtures.erkkiJokinenDto))
+    given(personService.createPerson(PersonFixtures.akuAnkkadDto))
             .willReturn(new DocumentPerson(
                     0,
-                    PersonFixtures.erkkiJokinenDto
+                    PersonFixtures.akuAnkkadDto
             ).toDataTransferPerson());
 
     assertThat(mockMvcTester.post()
             .uri("/api/persons")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(PersonFixtures.erkkiJokinenJsonString))
+            .content(PersonFixtures.akuAnkkaJsonString))
             .hasStatus(HttpStatus.CREATED)
             .bodyJson()
             .extractingPath("$.id")
@@ -65,7 +61,7 @@ public class PersonControllerTests {
     given(personService.findById(0))
             .willReturn(new DocumentPerson(
                     0,
-                    PersonFixtures.erkkiJokinenDto
+                    PersonFixtures.akuAnkkadDto
             ).toDataTransferPerson());
 
     assertThat(mockMvcTester.get()
@@ -96,16 +92,16 @@ public class PersonControllerTests {
 
   @Test
   void putPersonReturnsOk() {
-    given(personService.createPerson(PersonFixtures.erkkiJokinenDto))
+    given(personService.createPerson(PersonFixtures.akuAnkkadDto))
             .willReturn(new DocumentPerson(
                     0,
-                    PersonFixtures.erkkiJokinenDto
+                    PersonFixtures.akuAnkkadDto
             ).toDataTransferPerson());
 
     assertThat(mockMvcTester.post()
             .uri("/api/persons")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(PersonFixtures.erkkiJokinenJsonString))
+            .content(PersonFixtures.akuAnkkaJsonString))
             .hasStatus(HttpStatus.CREATED)
             .bodyJson()
             .extractingPath("$.id")
@@ -114,7 +110,7 @@ public class PersonControllerTests {
     assertThat(mockMvcTester.put()
             .uri("/api/persons/0")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(PersonFixtures.erkkiJokinenJsonString))
+            .content(PersonFixtures.akuAnkkaJsonString))
             .hasStatus(HttpStatus.OK);
   }
 

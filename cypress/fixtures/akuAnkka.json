@@ -9,20 +9,20 @@
   "deathPlace": "Helsinki",
   "firstNames": [
     {
-      "name": "Erkki",
+      "name": "Aku",
       "nickname": true
     }
   ],
   "lastNames": [
     {
-      "name": "Jokinen",
+      "name": "Ankka",
       "current": true
     }
   ],
   "additionalInfos": [
     {
-      "key": "Kengänkoko",
-      "value": "40"
+      "key": "Rekkari",
+      "value": "313"
     }
   ]
 }

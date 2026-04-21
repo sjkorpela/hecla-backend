@@ -5,7 +5,7 @@ import com.hecla.heclaBackend.model.*;
 import java.util.List;
 
 public class PersonFixtures {
-  public static final DataTransferPerson erkkiJokinenDto = new DataTransferPerson(
+  public static final DataTransferPerson akuAnkkadDto = new DataTransferPerson(
           null,
           null,
           null,
@@ -15,12 +15,12 @@ public class PersonFixtures {
           true,
           2000,
           "Helsinki",
-          List.of(new FirstName("Erkki", true)),
-          List.of(new LastName("Jokinen", true)),
-          List.of(new AdditionalInfo("Kengänkoko", "40"))
+          List.of(new FirstName("Aku", true)),
+          List.of(new LastName("Ankka", true)),
+          List.of(new AdditionalInfo("Rekkari", "313"))
   );
 
-  public static final String erkkiJokinenJsonString = """
+  public static final String akuAnkkaJsonString = """
           {
             "fatherId": null,
             "motherId": null,
@@ -32,26 +32,26 @@ public class PersonFixtures {
             "deathPlace": "Helsinki",
             "firstNames": [
               {
-                "name": "Erkki",
+                "name": "Aku",
                 "nickname": true
               }
             ],
             "lastNames": [
               {
-                "name": "Jokinen",
+                "name": "Ankka",
                 "current": true
               }
             ],
             "additionalInfos": [
               {
-                "key": "Kengänkoko",
-                "value": "40"
+                "key": "Rekkari",
+                "value": "313"
               }
             ]
           }
           """;
 
-  public static final DataTransferPerson maijaKallioDto = new DataTransferPerson(
+  public static final DataTransferPerson iinesAnkkaDto = new DataTransferPerson(
           null,
           null,
           null,
@@ -61,12 +61,12 @@ public class PersonFixtures {
           false,
           null,
           null,
-          List.of(new FirstName("Maija", true)),
-          List.of(new LastName("Kallio", true), new LastName("Kivi", false)),
-          List.of(new AdditionalInfo("Lempiväri", "Keltainen"))
+          List.of(new FirstName("Iines", true)),
+          List.of(new LastName("Ankka", true), new LastName("Hanhi", false)),
+          List.of(new AdditionalInfo("Lempiväri", "Pinkki"))
   );
 
-  public static final DataTransferPerson jussiLindstromDto = new DataTransferPerson(
+  public static final DataTransferPerson hannuHanhiDto = new DataTransferPerson(
           null,
           null,
           null,
@@ -76,9 +76,9 @@ public class PersonFixtures {
           false,
           null,
           null,
-          List.of(new FirstName("Jussi", true), new FirstName("Matti", false)),
-          List.of(new LastName("Lindström", true)),
-          List.of(new AdditionalInfo("Hiusväri", "Vaihtelee"))
+          List.of(new FirstName("Hannu", true), new FirstName("Gladstone", false)),
+          List.of(new LastName("Hanhi", true), new LastName("Gander", false)),
+          List.of(new AdditionalInfo("Hiusväri", "Blondi"))
   );
 
   public static final DataTransferPerson allNullDto = new DataTransferPerson(
