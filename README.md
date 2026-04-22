@@ -1,8 +1,11 @@
 # HE/CLA Backend #
 
+*See repository [hecla-runtime-environment](https://www.github.com/sjkorpela/hecla-runtime-environment) for full project description!*
+
 Backend layers of HE/CLA project:
 * Maven Java Spring Boot backend as API request handler
 * MongoDB as backend
+* KeyCloak as authentication server
 
 
 ### How to run locally ###
