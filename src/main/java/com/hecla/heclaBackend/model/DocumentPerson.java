@@ -1,0 +1,74 @@
+package com.hecla.heclaBackend.model;
+
+import com.mongodb.lang.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "Person")
+public class DocumentPerson {
+
+  public enum Gender {
+    MALE,
+    FEMALE
+  }
+
+  @Id
+  @NonNull
+  private Integer id;
+
+  private Integer fatherId;
+  private Integer motherId;
+
+  private Gender gender;
+
+  private Integer birthYear;
+  private String birthPlace;
+  private Boolean deceased;
+  private Integer deathYear;
+  private String deathPlace;
+
+  private List<FirstName> firstNames;
+  private List<LastName> lastNames;
+  private List<AdditionalInfo> additionalInfos;
+
+  public DocumentPerson(int id, DataTransferPerson dto) {
+    setId(id);
+    setFatherId(dto.fatherId());
+    setMotherId(dto.motherId());
+    setGender(dto.gender());
+    setBirthYear(dto.birthYear());
+    setBirthPlace(dto.birthPlace());
+    setDeceased(dto.deceased());
+    setDeathYear(dto.deathYear());
+    setDeathPlace(dto.deathPlace());
+    setFirstNames(dto.firstNames());
+    setLastNames(dto.lastNames());
+    setAdditionalInfos(dto.additionalInfos());
+  }
+
+  public DataTransferPerson toDataTransferPerson() {
+    return new DataTransferPerson(
+            id,
+            fatherId,
+            motherId,
+            gender,
+            birthYear,
+            birthPlace,
+            deceased,
+            deathYear,
+            deathPlace,
+            firstNames,
+            lastNames,
+            additionalInfos
+    );
+  }
+}

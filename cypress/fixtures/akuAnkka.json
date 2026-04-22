@@ -1,0 +1,28 @@
+{
+  "fatherId": null,
+  "motherId": null,
+  "gender": "MALE",
+  "birthYear": 1900,
+  "birthPlace": "Turku",
+  "deceased": true,
+  "deathYear": 2000,
+  "deathPlace": "Helsinki",
+  "firstNames": [
+    {
+      "name": "Aku",
+      "nickname": true
+    }
+  ],
+  "lastNames": [
+    {
+      "name": "Ankka",
+      "current": true
+    }
+  ],
+  "additionalInfos": [
+    {
+      "key": "Rekkari",
+      "value": "313"
+    }
+  ]
+}

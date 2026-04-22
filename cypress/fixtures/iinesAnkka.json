@@ -1,0 +1,28 @@
+{
+  "fatherId": null,
+  "motherId": null,
+  "gender": "FEMALE",
+  "birthYear": 2000,
+  "birthPlace": "Joensuu",
+  "deceased": false,
+  "deathYear": null,
+  "deathPlace": null,
+  "firstNames": [
+    {
+      "name": "Iines",
+      "nickname": true
+    }
+  ],
+  "lastNames": [
+    {
+      "name": "Ankka",
+      "current": true
+    }
+  ],
+  "additionalInfos": [
+    {
+      "key": "Lempiväri",
+      "value": "Pinkki"
+    }
+  ]
+}
