@@ -17,6 +17,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Repository;
 
 import javax.print.Doc;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -67,15 +68,16 @@ public class PersonRepo {
       filterCriteria.and("deathYear").lte(filter.diedBefore());
     }
 
-    if (search != null)  {
-      Pattern pattern = Pattern.compile(
-              Pattern.quote(search),
-              Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE
-      );
-      filterCriteria.andOperator(new Criteria().orOperator(
-              Criteria.where("firstNames.name").regex(pattern),
-              Criteria.where("lastNames.name").regex(pattern)
-      ));
+    if (search != null && !search.trim().isEmpty()) {
+      // Split all word separated by whitespaces into keywords
+      String[] keywords = search.trim().split("\\s+");
+
+      List<Criteria> allKeywords = Arrays.stream(keywords).map(k -> new Criteria().orOperator(
+              Criteria.where("firstNames.name").regex(k, "i"),
+              Criteria.where("lastNames.name").regex(k, "i")
+      )).toList();
+
+      filterCriteria.andOperator(allKeywords);
     }
 
     if (pageable.getSort().getOrderFor("name") != null) {
