@@ -123,7 +123,8 @@ public class PersonRepo {
       List<DocumentPerson> results = repo.aggregate(aggregation, DocumentPerson.class, DocumentPerson.class)
               .getMappedResults();
 
-      long count = repo.count(new Query(), DocumentPerson.class);
+      Query countQuery = new Query(filterCriteria);
+      long count = repo.count(countQuery, DocumentPerson.class);
 
       return new PageImpl<>(results, pageable, count);
     }
@@ -131,7 +132,10 @@ public class PersonRepo {
     query.addCriteria(filterCriteria);
 
     List<DocumentPerson> persons = repo.find(query, DocumentPerson.class);
-    long count = repo.count(query, DocumentPerson.class);
+
+    Query countQuery = new Query(filterCriteria);
+    long count = repo.count(countQuery, DocumentPerson.class);
+
     return new PageImpl<DocumentPerson>(persons, pageable, count);
   }
 
